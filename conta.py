@@ -38,25 +38,33 @@ class Conta():
         self.__limite = limite
             
     def sacar(self, valor):
-        if self.get_saldo() >= valor and self.get_limite() >= valor:
-            self.__saldo -= valor
-            return f'Saque de R${valor:.2f} realizado com sucesso.'
+        if valor > 0:
+            if self.get_saldo() >= valor and self.get_limite() >= valor:
+                self.__saldo -= valor
+                return f'Saque de R${valor:.2f} realizado com sucesso.'
+            else:
+                return 'Não foi possível realizar o saque. Saldo insuficiente ou valor acima do limite de saque.'
         else:
-            return f'Não foi possível realizar o saque. Saldo insuficiente ou valor acima do limite de saque.'
-
-
+            return 'Transação não realizada. Informe um valor maior que zero'
+        
     def depositar(self, valor):
-        self.__saldo += valor
-        return f'Deposito de R${valor:.2f} realizado com sucesso.'
+        if valor > 0:
+            self.__saldo += valor
+            return f'Deposito de R${valor:.2f} realizado com sucesso.'
+        else:
+            return 'Transação não realizada. Informe um valor maior que zero'    
 
     def transferir(self, valor, conta_destino):
-        if self.get_saldo() >= valor:
-            self.__saldo -= valor
-            conta_destino.depositar(valor)
-            return f'Transferência de R${valor:.2f} realizada com sucesso para Conta n° {conta_destino.get_num_conta()} Titular: {conta_destino.get_nome()}.'
+        if valor > 0:
+            if self.get_saldo() >= valor:
+                self.__saldo -= valor
+                conta_destino.depositar(valor)
+                return f'Transferência de R${valor:.2f} realizada com sucesso para Conta n° {conta_destino.get_num_conta()} Titular: {conta_destino.get_nome()}.'
+            else:
+                return f'Saldo insuficiente para a transferência'   
         else:
-            return f'Saldo insuficiente para a transferência'   
-        
+            return 'Transação não realizada. Informe um valor maior que zero'
+    
     def exibir_saldo(self):
         return f'Saldo da conta {self.__num_conta}: R${self.__saldo:.2f}'
 
